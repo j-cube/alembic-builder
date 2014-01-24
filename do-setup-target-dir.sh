@@ -15,7 +15,4 @@ if [ ! -e ${TGT} ] ; then
   sudo mkdir -p ${TGT}
   sudo chgrp -R developers ${TGT}
   sudo chmod g+rwx ${TGT}
-else
-  echo "Cleaning up ${TGT}"
-  # rm -rf ${TGT}/*
 fi
