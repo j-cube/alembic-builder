@@ -43,7 +43,8 @@ cd $PKG_DIR
 make CC="gcc -fPIC" 2>&1 | tee ${PKG_LOG_PFX}-make.log
 #make test 2>&1 | tee ${PKG_LOG_PFX}-make-test.log
 make install PREFIX=${TGT} 2>&1 | tee ${PKG_LOG_PFX}-make-install.log
-mv ${TGT}/man/man1/* ${TGT}/share/man/man1/ 
+mkdir -p ${TGT}/share/man/man1/
+mv ${TGT}/man/man1/* ${TGT}/share/man/man1/
 rmdir ${TGT}/man/man1 ${TGT}/man
 
 
