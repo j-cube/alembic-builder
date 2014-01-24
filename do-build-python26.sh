@@ -17,7 +17,7 @@ if [ ! -e ${TGT} ] ; then
 fi
 
 PKG="python26"
-PKG_URL="http://www.python.org/ftp/python/2.6.9/Python-2.6.9.tgz"
+PKG_URL="http://www.python.org/ftp/python/2.6.8/Python-2.6.8.tgz"
 PKG_FILENAME="Python-2.6.8.tgz"
 PKG_DIR="Python-2.6.8"
 
