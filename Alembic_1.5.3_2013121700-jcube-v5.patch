@@ -1,0 +1,221 @@
+diff -Naur Alembic_1.5.3_2013121700.orig/build/FindIlmBase.cmake Alembic_1.5.3_2013121700/build/FindIlmBase.cmake
+--- Alembic_1.5.3_2013121700.orig/build/FindIlmBase.cmake	2013-12-17 19:29:15.000000000 +0100
++++ Alembic_1.5.3_2013121700/build/FindIlmBase.cmake	2014-01-23 18:49:22.000000000 +0100
+@@ -67,6 +67,7 @@
+ 
+ SET(LIBRARY_PATHS
+     ${ALEMBIC_ILMBASE_ROOT}/lib
++    /opt/jcube/lib
+     ~/Library/Frameworks
+     /Library/Frameworks
+     /usr/local/lib
+@@ -84,6 +85,8 @@
+ 
+ SET(INCLUDE_PATHS
+     ${ALEMBIC_ILMBASE_ROOT}/include/OpenEXR/
++    /opt/jcube/include
++    /opt/jcube/include/OpenEXR/
+     ~/Library/Frameworks
+     /Library/Frameworks
+     /usr/local/include/OpenEXR/
+@@ -212,5 +215,3 @@
+        ${ALEMBIC_ILMBASE_IEX_LIB}
+        ${ALEMBIC_ILMBASE_IEXMATH_LIB}
+        ${ALEMBIC_ILMBASE_HALF_LIB} )
+-
+-
+diff -Naur Alembic_1.5.3_2013121700.orig/build/FindOpenEXR.cmake Alembic_1.5.3_2013121700/build/FindOpenEXR.cmake
+--- Alembic_1.5.3_2013121700.orig/build/FindOpenEXR.cmake	2013-12-17 19:29:15.000000000 +0100
++++ Alembic_1.5.3_2013121700/build/FindOpenEXR.cmake	2014-01-23 18:49:22.000000000 +0100
+@@ -72,6 +72,7 @@
+ 
+ SET(LIBRARY_PATHS 
+     ${ALEMBIC_OPENEXR_ROOT}/lib
++    /opt/jcube/lib
+     ~/Library/Frameworks
+     /Library/Frameworks
+     /usr/local/lib
+@@ -85,6 +86,8 @@
+ 
+ SET(INCLUDE_PATHS 
+     ${ALEMBIC_OPENEXR_ROOT}/include/OpenEXR/
++    /opt/jcube/include/OpenEXR
++    /opt/jcube/include
+     ~/Library/Frameworks
+     /Library/Frameworks
+     /usr/local/include/OpenEXR/
+@@ -135,5 +138,3 @@
+   MESSAGE( STATUS "OPENEXR INCLUDE PATH: ${ALEMBIC_OPENEXR_INCLUDE_PATH}" )
+   SET( ALEMBIC_OPENEXR_LIBS ${ALEMBIC_OPENEXR_ILMIMF_LIB} )
+ ENDIF()
+-
+-
+diff -Naur Alembic_1.5.3_2013121700.orig/build/FindPyIlmBase.cmake Alembic_1.5.3_2013121700/build/FindPyIlmBase.cmake
+--- Alembic_1.5.3_2013121700.orig/build/FindPyIlmBase.cmake	2013-12-17 19:29:15.000000000 +0100
++++ Alembic_1.5.3_2013121700/build/FindPyIlmBase.cmake	2014-01-23 18:50:23.000000000 +0100
+@@ -45,6 +45,11 @@
+ IF(DEFINED USE_PYALEMBIC AND NOT USE_PYALEMBIC)
+     MESSAGE(STATUS "Skipping finding PyIlmBase and PyImath")
+ ELSE()
++    IF ( DEFINED ENV{PYILMBASE_ROOT} )
++      SET( PYILMBASE_ROOT
++        $ENV{PYILMBASE_ROOT} )
++    ENDIF ()
++
+     MESSAGE(STATUS "About to start finding PyIlmBase and PyImath")
+     IF(NOT DEFINED PYILMBASE_ROOT)
+         IF ( ${CMAKE_HOST_UNIX} )
+@@ -70,6 +75,8 @@
+     SET(LIBRARY_PATHS
+         ${ALEMBIC_PYILMBASE_ROOT}/lib
+         ${ALEMBIC_PYILMBASE_MODULE_DIRECTORY}
++        /opt/jcube/lib
++        /opt/lib
+         ~/Library/Frameworks
+         /Library/Frameworks
+         /usr/local/lib
+@@ -87,6 +94,10 @@
+ 
+     SET(INCLUDE_PATHS
+         ${ALEMBIC_PYILMBASE_ROOT}/include/OpenEXR/
++        /opt/jcube/include/OpenEXR/
++        /opt/jcube/include
++        /opt/include/OpenEXR/
++        /opt/include
+         ~/Library/Frameworks
+         /Library/Frameworks
+         /usr/local/include/OpenEXR/
+@@ -100,6 +111,36 @@
+         /usr/freeware/include
+     )
+ 
++    IF ( NOT DEFINED ENV{LIBPYTHON_VERSION} )
++      IF (APPLE)
++        SET( LIBPYTHON_VERSION 2.7 )
++      ELSE ()
++        SET( LIBPYTHON_VERSION 2.6 )
++      ENDIF ()
++    ELSE ()
++      SET( LIBPYTHON_VERSION
++        $ENV{LIBPYTHON_VERSION} )
++    ENDIF ()
++    SET( LIBPYTHON python${LIBPYTHON_VERSION} )
++
++    SET(PY_MODULE_PATHS
++        ${ALEMBIC_PYILMBASE_ROOT}/lib/${LIBPYTHON}/site-packages
++        ${ALEMBIC_PYILMBASE_MODULE_DIRECTORY}
++        /opt/jcube/lib/${LIBPYTHON}/site-packages
++        /opt/jcube/lib
++        /opt/lib
++        ~/Library/Frameworks
++        /Library/Frameworks
++        /Library/Python/${LIBPYTHON_VERSION}/site-packages
++        /usr/local/lib
++        /usr/lib
++        /sw/lib
++        /opt/local/lib
++        /opt/csw/lib
++        /opt/lib
++        /usr/freeware/lib64
++    )
++
+     FIND_PATH( ALEMBIC_PYILMBASE_INCLUDE_DIRECTORY PyImath.h
+                PATHS
+                ${INCLUDE_PATHS}
+@@ -125,6 +166,7 @@
+     IF( NOT DEFINED ALEMBIC_PYILMBASE_PYIMATH_MODULE )
+       FIND_LIBRARY( ALEMBIC_PYILMBASE_PYIMATH_MODULE imathmodule.so
+                     PATHS
++                    ${PY_MODULE_PATHS}
+                     ${LIBRARY_PATHS}
+                     NO_DEFAULT_PATH
+                     NO_CMAKE_ENVIRONMENT_PATH
+diff -Naur Alembic_1.5.3_2013121700.orig/examples/bin/SimpleAbcViewer/CMakeLists.txt Alembic_1.5.3_2013121700/examples/bin/SimpleAbcViewer/CMakeLists.txt
+--- Alembic_1.5.3_2013121700.orig/examples/bin/SimpleAbcViewer/CMakeLists.txt	2013-12-17 19:29:15.000000000 +0100
++++ Alembic_1.5.3_2013121700/examples/bin/SimpleAbcViewer/CMakeLists.txt	2014-01-23 18:49:22.000000000 +0100
+@@ -48,6 +48,7 @@
+ SET( THIS_LIBS
+      AlembicAbcOpenGL
+     ${ALEMBIC_ILMBASE_LIBS}
++    ${ZLIB_LIBRARIES}
+    )
+ 
+ INCLUDE_DIRECTORIES( "${ALEMBIC_SOURCE_DIR}/lib" )
+diff -Naur Alembic_1.5.3_2013121700.orig/python/PyAbcOpenGL/CMakeLists.txt Alembic_1.5.3_2013121700/python/PyAbcOpenGL/CMakeLists.txt
+--- Alembic_1.5.3_2013121700.orig/python/PyAbcOpenGL/CMakeLists.txt	2013-12-17 19:29:15.000000000 +0100
++++ Alembic_1.5.3_2013121700/python/PyAbcOpenGL/CMakeLists.txt	2014-01-23 18:49:22.000000000 +0100
+@@ -51,12 +51,14 @@
+ 
+         SET( ALEMBIC_PYTHON_ROOT "${OSX_PYTHON_ROOT}/Python" )
+     ELSE()
+-        SET( PYTHON_INCLUDE_DIR "/usr/include/${LIBPYTHON}" )
+-        IF (USE_LIB64)
+-            SET( ALEMBIC_PYTHON_ROOT "/usr/lib64/${LIBPYTHON}/config" )
+-        ELSE()
+-            SET( ALEMBIC_PYTHON_ROOT "/usr/lib/${LIBPYTHON}/config" )
+-        ENDIF()
++        #SET( PYTHON_INCLUDE_DIR "/usr/include/${LIBPYTHON}" )
++        SET( PYTHON_INCLUDE_DIR "/opt/jcube/include/${LIBPYTHON}" )
++        #IF (USE_LIB64)
++        #    SET( ALEMBIC_PYTHON_ROOT "/usr/lib64/${LIBPYTHON}/config" )
++        #ELSE()
++        #    SET( ALEMBIC_PYTHON_ROOT "/usr/lib/${LIBPYTHON}/config" )
++        #ENDIF()
++        SET( ALEMBIC_PYTHON_ROOT "/opt/jcube/lib" )
+     ENDIF()
+ ELSE()
+     SET( LIBPYTHON_FILE "${LIBPYTHON}.dll" )
+@@ -110,7 +112,7 @@
+                   ${EXTERNAL_MATH_LIBS}
+                   ${ALEMBIC_PYILMBASE_PYIMATH_LIB} )
+ 
+-  INCLUDE_DIRECTORIES( "/usr/include/python2.6" "${ALEMBIC_SOURCE_DIR}/lib"
++  INCLUDE_DIRECTORIES( "${PYTHON_INCLUDE_DIR}" "${ALEMBIC_SOURCE_DIR}/lib"
+       "${ALEMBIC_SOURCE_DIR}/python/PyAbcOpenGL" )
+ 
+   ADD_LIBRARY( alembicglmodule SHARED ${CPP_FILES} )
+diff -Naur Alembic_1.5.3_2013121700.orig/python/PyAlembic/CMakeLists.txt Alembic_1.5.3_2013121700/python/PyAlembic/CMakeLists.txt
+--- Alembic_1.5.3_2013121700.orig/python/PyAlembic/CMakeLists.txt	2013-12-17 19:29:15.000000000 +0100
++++ Alembic_1.5.3_2013121700/python/PyAlembic/CMakeLists.txt	2014-01-23 18:49:45.000000000 +0100
+@@ -33,11 +33,17 @@
+ ##
+ ##-*****************************************************************************
+ 
+-IF (APPLE)
+-  SET( LIBPYTHON_VERSION 2.7 )
++IF ( NOT DEFINED ENV{LIBPYTHON_VERSION} )
++  IF (APPLE)
++    SET( LIBPYTHON_VERSION 2.7 )
++  ELSE ()
++    SET( LIBPYTHON_VERSION 2.6 )
++  ENDIF ()
+ ELSE ()
+-  SET( LIBPYTHON_VERSION 2.6 )
++  SET( LIBPYTHON_VERSION
++    $ENV{LIBPYTHON_VERSION} )
+ ENDIF ()
++
+ SET( LIBPYTHON python${LIBPYTHON_VERSION} )
+ OPTION( USE_LIB64 "Search for deps in lib64 vs lib" ON )
+ 
+@@ -52,12 +58,14 @@
+         SET( ALEMBIC_PYTHON_ROOT "${OSX_PYTHON_ROOT}/lib" )
+     ELSE()
+       SET( LIBPYTHON_FILE "lib${LIBPYTHON}.so" )
+-        SET( PYTHON_INCLUDE_DIR "/usr/include/${LIBPYTHON}" )
+-        IF (USE_LIB64)
+-            SET( ALEMBIC_PYTHON_ROOT "/usr/lib64/${LIBPYTHON}/config" )
+-        ELSE()
+-            SET( ALEMBIC_PYTHON_ROOT "/usr/lib/${LIBPYTHON}/config" )
+-        ENDIF()
++        #SET( PYTHON_INCLUDE_DIR "/usr/include/${LIBPYTHON}" )
++        SET( PYTHON_INCLUDE_DIR "/opt/jcube/include/${LIBPYTHON}" )
++        #IF (USE_LIB64)
++        #    SET( ALEMBIC_PYTHON_ROOT "/usr/lib64/${LIBPYTHON}/config" )
++        #ELSE()
++        #    SET( ALEMBIC_PYTHON_ROOT "/usr/lib/${LIBPYTHON}/config" )
++        #ENDIF()
++        SET( ALEMBIC_PYTHON_ROOT "/opt/jcube/lib" )
+     ENDIF()
+ ELSE()
+     SET( LIBPYTHON_FILE "${LIBPYTHON}.dll" )

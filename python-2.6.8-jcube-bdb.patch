@@ -1,0 +1,19 @@
+diff -Naur Python-2.6.8.orig/setup.py Python-2.6.8/setup.py
+--- Python-2.6.8.orig/setup.py	2012-04-10 17:32:11.000000000 +0200
++++ Python-2.6.8/setup.py	2014-01-24 16:09:06.000000000 +0100
+@@ -827,6 +828,7 @@
+             # Fink defaults (http://fink.sourceforge.net/)
+             '/sw/include/db4',
+             '/sw/include/db3',
++            '/opt/jcube/include',
+         ]
+         # 4.x minor number specific paths
+         for x in gen_db_minor_ver_nums(4):
+@@ -838,6 +840,7 @@
+             db_inc_paths.append('/opt/db-4.%d/include' % x)
+             # MacPorts default (http://www.macports.org/)
+             db_inc_paths.append('/opt/local/include/db4%d' % x)
++            db_inc_paths.append('/opt/jcube/include/db4.%d' % x)
+         # 3.x minor number specific paths
+         for x in gen_db_minor_ver_nums(3):
+             db_inc_paths.append('/usr/include/db3%d' % x)

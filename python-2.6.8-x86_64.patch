@@ -1,0 +1,11 @@
+diff -Naur Python-2.6.8.orig/setup.py Python-2.6.8/setup.py
+--- Python-2.6.8.orig/setup.py	2012-04-10 17:32:11.000000000 +0200
++++ Python-2.6.8/setup.py	2014-01-24 16:09:06.000000000 +0100
+@@ -410,6 +410,7 @@
+         lib_dirs = self.compiler.library_dirs + [
+             '/lib64', '/usr/lib64',
+             '/lib', '/usr/lib',
++            '/usr/lib/x86_64-linux-gnu',
+             ]
+         inc_dirs = self.compiler.include_dirs + ['/usr/include']
+         exts = []

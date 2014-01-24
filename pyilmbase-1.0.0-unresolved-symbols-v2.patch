@@ -1,0 +1,96 @@
+diff -Naur pyilmbase-1.0.0.orig/PyIex/Makefile.am pyilmbase-1.0.0/PyIex/Makefile.am
+--- pyilmbase-1.0.0.orig/PyIex/Makefile.am	2012-07-18 01:27:29.000000000 +0200
++++ pyilmbase-1.0.0/PyIex/Makefile.am	2014-01-22 15:38:59.000000000 +0100
+@@ -14,7 +14,7 @@
+ 
+ iexmodule_la_SOURCES = iexmodule.cpp
+ iexmodule_la_LDFLAGS = -avoid-version -module
+-iexmodule_la_LIBADD  = libPyIex.la @BOOST_PYTHON_LIBS@
++iexmodule_la_LIBADD  = -lz @ILMBASE_LIBS@ libPyIex.la @BOOST_PYTHON_LIBS@
+ 
+ noinst_HEADERS = 
+ 
+diff -Naur pyilmbase-1.0.0.orig/PyIex/Makefile.in pyilmbase-1.0.0/PyIex/Makefile.in
+--- pyilmbase-1.0.0.orig/PyIex/Makefile.in	2012-07-31 22:07:23.000000000 +0200
++++ pyilmbase-1.0.0/PyIex/Makefile.in	2014-01-22 15:39:12.000000000 +0100
+@@ -216,7 +216,7 @@
+ libPyIexincludedir = $(includedir)/OpenEXR
+ iexmodule_la_SOURCES = iexmodule.cpp
+ iexmodule_la_LDFLAGS = -avoid-version -module
+-iexmodule_la_LIBADD = libPyIex.la @BOOST_PYTHON_LIBS@
++iexmodule_la_LIBADD = -lz @ILMBASE_LIBS@ libPyIex.la @BOOST_PYTHON_LIBS@
+ noinst_HEADERS = 
+ INCLUDES = @ILMBASE_CXXFLAGS@ \
+ 	   -I$(top_builddir)  \
+diff -Naur pyilmbase-1.0.0.orig/PyImath/Makefile.am pyilmbase-1.0.0/PyImath/Makefile.am
+--- pyilmbase-1.0.0.orig/PyImath/Makefile.am	2012-07-31 02:28:49.000000000 +0200
++++ pyilmbase-1.0.0/PyImath/Makefile.am	2014-01-22 15:38:19.000000000 +0100
+@@ -71,8 +71,8 @@
+ 
+ libPyImath_la_LDFLAGS = -version-info @LIBTOOL_VERSION@ \
+                         -no-undefined
+-libPyImath_la_LIBADD  = -lz $(top_builddir)/PyIex/libPyIex.la \
+-                        @ILMBASE_LIBS@ @BOOST_PYTHON_LIBS@
++libPyImath_la_LIBADD  = -lz @ILMBASE_LIBS@ $(top_builddir)/PyIex/libPyIex.la \
++                        @BOOST_PYTHON_LIBS@
+ libPyImathincludedir  = $(includedir)/OpenEXR
+ 
+ imathmodule_la_SOURCES = imathmodule.cpp \
+@@ -80,7 +80,8 @@
+     PyImathBasicTypes.cpp 
+ 
+ imathmodule_la_LDFLAGS = -avoid-version -module
+-imathmodule_la_LIBADD  = -lPyImath @BOOST_PYTHON_LIBS@
++imathmodule_la_LIBADD  = -lz @ILMBASE_LIBS@ $(top_builddir)/PyIex/libPyIex.la \
++                         -lPyImath @BOOST_PYTHON_LIBS@
+ 
+ noinst_HEADERS = PyImathFun.h \
+     PyImathBasicTypes.h 
+diff -Naur pyilmbase-1.0.0.orig/PyImath/Makefile.in pyilmbase-1.0.0/PyImath/Makefile.in
+--- pyilmbase-1.0.0.orig/PyImath/Makefile.in	2012-07-31 22:07:24.000000000 +0200
++++ pyilmbase-1.0.0/PyImath/Makefile.in	2014-01-22 15:38:42.000000000 +0100
+@@ -286,8 +286,8 @@
+ libPyImath_la_LDFLAGS = -version-info @LIBTOOL_VERSION@ \
+                         -no-undefined
+ 
+-libPyImath_la_LIBADD = -lz $(top_builddir)/PyIex/libPyIex.la \
+-                        @ILMBASE_LIBS@ @BOOST_PYTHON_LIBS@
++libPyImath_la_LIBADD = -lz @ILMBASE_LIBS@ $(top_builddir)/PyIex/libPyIex.la \
++                        @BOOST_PYTHON_LIBS@
+ 
+ libPyImathincludedir = $(includedir)/OpenEXR
+ imathmodule_la_SOURCES = imathmodule.cpp \
+@@ -295,7 +295,8 @@
+     PyImathBasicTypes.cpp 
+ 
+ imathmodule_la_LDFLAGS = -avoid-version -module
+-imathmodule_la_LIBADD = -lPyImath @BOOST_PYTHON_LIBS@
++imathmodule_la_LIBADD = -lz @ILMBASE_LIBS@ $(top_builddir)/PyIex/libPyIex.la \
++                        -lPyImath @BOOST_PYTHON_LIBS@
+ noinst_HEADERS = PyImathFun.h \
+     PyImathBasicTypes.h 
+ 
+diff -Naur pyilmbase-1.0.0.orig/PyImathNumpy/Makefile.am pyilmbase-1.0.0/PyImathNumpy/Makefile.am
+--- pyilmbase-1.0.0.orig/PyImathNumpy/Makefile.am	2012-07-18 21:43:19.000000000 +0200
++++ pyilmbase-1.0.0/PyImathNumpy/Makefile.am	2014-01-22 15:39:33.000000000 +0100
+@@ -4,7 +4,7 @@
+ 
+ imathnumpymodule_la_SOURCES = imathnumpymodule.cpp
+ imathnumpymodule_la_LDFLAGS = -avoid-version -module
+-imathnumpymodule_la_LIBADD  = $(top_builddir)/PyImath/libPyImath.la @BOOST_PYTHON_LIBS@
++imathnumpymodule_la_LIBADD  = -lz @ILMBASE_LIBS@ $(top_builddir)/PyImath/libPyImath.la @BOOST_PYTHON_LIBS@
+ 
+ noinst_HEADERS = 
+ 
+diff -Naur pyilmbase-1.0.0.orig/PyImathNumpy/Makefile.in pyilmbase-1.0.0/PyImathNumpy/Makefile.in
+--- pyilmbase-1.0.0.orig/PyImathNumpy/Makefile.in	2012-07-31 22:07:24.000000000 +0200
++++ pyilmbase-1.0.0/PyImathNumpy/Makefile.in	2014-01-22 15:40:47.000000000 +0100
+@@ -203,7 +203,7 @@
+ pyexec_LTLIBRARIES = imathnumpymodule.la
+ imathnumpymodule_la_SOURCES = imathnumpymodule.cpp
+ imathnumpymodule_la_LDFLAGS = -avoid-version -module
+-imathnumpymodule_la_LIBADD = $(top_builddir)/PyImath/libPyImath.la @BOOST_PYTHON_LIBS@
++imathnumpymodule_la_LIBADD = -lz @ILMBASE_LIBS@ $(top_builddir)/PyImath/libPyImath.la @BOOST_PYTHON_LIBS@
+ noinst_HEADERS = 
+ INCLUDES = @ILMBASE_CXXFLAGS@ \
+            @NUMPY_CXXFLAGS@   \
