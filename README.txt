@@ -1,5 +1,5 @@
-ALEMBIC BUILD AUTOMATION
-========================
+J-CUBE ALEMBIC BUILDER
+======================
 
 The provided scripts automatically compile everything (Alembic and all its dependencies),
 installing to a single directory (`$TGT`).
