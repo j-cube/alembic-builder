@@ -100,3 +100,5 @@ REFERENCES
 * https://groups.google.com/forum/?fromgroups=#!topic/alembic-discussion/iqo1MKE4kyc
 * https://groups.google.com/forum/?fromgroups=#!topic/alembic-discussion/7k5tQozZfTo
 * http://stackoverflow.com/questions/19148564/getting-failed-to-build-these-modules-curses-curses-panel-ssl-while-install
+* https://github.com/murphyrandle/murphyrandle.github.io/blob/master/_posts/2013-03-28-linking-order-matters.md
+* https://github.com/murphyrandle/murphyrandle.github.io/blob/master/_posts/2013-02-23-building-pyalembic.md
