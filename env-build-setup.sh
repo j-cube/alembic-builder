@@ -39,10 +39,10 @@ export PATH=${TGT}/bin:${TGT}/alembic-1.5.3/bin:$PATH
 
 if [ "${TARGET_64}" = "yes" ]; then
   echo "Selected 64 bit target architecture."
-  export PKG_CONFIG_DIR=${TGT}/lib/pkgconfig:$PKG_CONFIG_DIR:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
+  export PKG_CONFIG_PATH=${TGT}/lib/pkgconfig:$PKG_CONFIG_PATH:/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig
 else
   echo "Selected 32 bit target architecture."
-  export PKG_CONFIG_DIR=${TGT}/lib/pkgconfig:$PKG_CONFIG_DIR:/usr/lib/pkgconfig:/usr/share/pkgconfig
+  export PKG_CONFIG_PATH=${TGT}/lib/pkgconfig:$PKG_CONFIG_PATH:/usr/lib/pkgconfig:/usr/share/pkgconfig
 fi
 
 export BUILD_DATETAG=`date "+%Y%m%d_%H%M"`
