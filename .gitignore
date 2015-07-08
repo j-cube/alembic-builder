@@ -11,6 +11,10 @@
 /boost_1_48_0
 /ilmbase-1.0.3.tar.gz
 /ilmbase-1.0.3
+/libgit2-0.22.1.tar.gz
+/libgit2-0.22.1
+/msgpack-1.0.1.tar.gz
+/msgpack-1.0.1
 /numpy-1.6.2.tar.gz
 /numpy-1.6.2
 /pyilmbase-1.0.0-v1.7.tar.gz
@@ -23,3 +27,4 @@
 /Alembic_1.5.3_2013121700
 /alembic_build
 /.built.*
+/gitem_build.old*
