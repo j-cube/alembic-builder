@@ -5,6 +5,20 @@ if [[ $_ = $0 ]] ; then
   exit 1
 fi
 
+# BEWARE: OSX sets LC_CTYPE to "UTF-8" which is not valid on linux!
+# This causes the build to FAIL.
+#
+# To avoid the error below when configuring alembic / git-em:
+#   what(): locale::facet::_S_create_c_locale name not valid
+# LC_CTYPE and/or LC_ALL (and LANG?) must be set to a valid value.
+#
+# See https://svn.boost.org/trac/boost/ticket/5928
+# (for LC_* and LANG meaning, see http://pubs.opengroup.org/onlinepubs/7908799/xbd/envvar.html)
+export LANG=en_US.UTF8
+export LC_CTYPE=en_US.UTF8
+#export LC_ALL=en_US.UTF8
+##export LC_ALL=C
+
 # determine this script directory
 # see:
 #   http://stackoverflow.com/questions/59895/can-a-bash-script-tell-what-directory-its-stored-in
