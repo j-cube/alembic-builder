@@ -33,6 +33,8 @@ fi
 ./do-build-pyilmbase.sh
 ./do-build-openexr.sh
 ./do-build-HDF5.sh
+./do-build-msgpack.sh
+./do-build-libgit2.sh
 ./do-build-alembic.sh
 
 cd ${OLD_DIR}
