@@ -41,6 +41,13 @@ PKG_LOG_PFX="${LOG_PREFIX}${PKG}"
 ## TODO: not sure this is needed now that we specify everything
 #sudo updatedb
 
+if [ ! -e $PKG_DIR ] ; then
+  git clone git@github.com:j-cube/git-em.git $PKG_DIR
+  cd $PKG_DIR
+  git checkout 1.5.8/panta/dev
+  cd ${TOP_BUILD_DIR}
+fi
+
 cd $PKG_DIR
 
 ALEMBIC_BUILD_DIR=${TOP_BUILD_DIR}/gitem_build
@@ -53,11 +60,13 @@ mkdir -p ${ALEMBIC_BUILD_DIR}
 
 export CMAKE_INSTALL_PREFIX=${TGT}
 export ALEMBIC_INSTALL_PREFIX=${TGT}
-export PYILMBASE_ROOT=${TGT}/lib
+#export PYILMBASE_ROOT=${TGT}/lib
 export LIBPYTHON_VERSION=${PYTHON_VERSION}
 
 # bootstrap
 echo "Bootstrapping J-Cube git-em build..."
+export CFLAGS="${CFLAGS} -Wno-deprecated-register -Wno-unused-function"
+export CXXFLAGS="${CXXFLAGS} -Wno-deprecated-register -Wno-unused-function"
 ${TARGET_PYTHON} build/bootstrap/alembic_bootstrap.py \
   --dependency-install-root=${TGT} \
   --hdf5_include_dir=${TGT}/include \
@@ -65,17 +74,31 @@ ${TARGET_PYTHON} build/bootstrap/alembic_bootstrap.py \
   --ilmbase_include_dir=${TGT}/include/OpenEXR/ \
   --ilmbase_imath_library=${TGT}/lib/libImath.a \
   --boost_include_dir=${TGT}/include/boost-1_48 \
-  --boost_thread_library=${TGT}/lib/libboost_thread-gcc46-mt-1_48.a \
-  --boost_system_library=${TGT}/lib/libboost_system-gcc46-mt-1_48.a \
-  --boost_filesystem_library=${TGT}/lib/libboost_filesystem-gcc46-mt-1_48.a \
-  --boost_python_library=${TGT}/lib/libboost_python-gcc46-mt-1_48.a \
+  --boost_thread_library=${TGT}/lib/libboost_thread-xgcc42-mt-1_48.a \
+  --boost_system_library=${TGT}/lib/libboost_system-xgcc42-mt-1_48.a \
+  --boost_filesystem_library=${TGT}/lib/libboost_filesystem-xgcc42-mt-1_48.a \
+  --boost_python_library=${TGT}/lib/libboost_python-xgcc42-mt-1_48.a \
   --zlib_include_dir=${TGT}/include \
   --zlib_library=${TGT}/lib/libz.a \
   --debug \
   ${ALEMBIC_BUILD_DIR} 2>&1 | tee ${PKG_LOG_PFX}-bootstrap.log
 
 # set install target directory
-cmake -D CMAKE_INSTALL_PREFIX=${TGT} ${ALEMBIC_BUILD_DIR}
+# -D ALEMBIC_PYTHON_EXECUTABLE:FILEPATH="${TARGET_PYTHON}"
+cmake -D CMAKE_INSTALL_PREFIX=${TGT} \
+  -D Boost_LIBRARY_DIR:PATH="${TGT}/lib" \
+  -D Boost_THREAD_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_thread-xgcc42-mt-1_48.a" \
+  -D Boost_THREAD_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_thread-xgcc42-mt-1_48.a" \
+  -D Boost_SYSTEM_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_system-xgcc42-mt-1_48.a" \
+  -D Boost_SYSTEM_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_system-xgcc42-mt-1_48.a" \
+  -D Boost_FILESYSTEM_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_filesystem-xgcc42-mt-1_48.a" \
+  -D Boost_FILESYSTEM_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_filesystem-xgcc42-mt-1_48.a" \
+  -D Boost_PROGRAM_OPTIONS_LIBRARY:FILEPATH="${TGT}/lib/libboost_program_options-xgcc42-mt-1_48.a" \
+  -D Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_program_options-xgcc42-mt-1_48.a" \
+  -D Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_program_options-xgcc42-mt-1_48.a" \
+  -D Boost_PYTHON_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_python-xgcc42-mt-1_48.a" \
+  -D Boost_PYTHON_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_python-xgcc42-mt-1_48.a" \
+  ${ALEMBIC_BUILD_DIR}
 
 echo "Compiling J-Cube git-em..."
 cd ${ALEMBIC_BUILD_DIR}

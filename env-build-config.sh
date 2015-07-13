@@ -12,7 +12,8 @@ fi
 
 # -- Edit variables here ----------------------------------------------
 
-export TGT=/opt/jcube
+#export TGT=/opt/jcube
+export TGT=${HOME}/jcube
 export PYTHON_VERSION=2.6
 
 # target system architecture addressing

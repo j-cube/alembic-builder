@@ -27,7 +27,7 @@ if [ "${PYTHON_VERSION}" = "2.6" ] ; then
 elif [ "${PYTHON_VERSION}" = "2.7" ] ; then
   ./do-build-python27.sh
 fi
-./do-build-boost.sh
+./do-build-boost-extended.sh
 ./do-build-ilmbase.sh
 ./do-build-numpy.sh
 ./do-build-pyilmbase.sh
@@ -35,7 +35,8 @@ fi
 ./do-build-HDF5.sh
 ./do-build-msgpack.sh
 ./do-build-libgit2.sh
-./do-build-alembic.sh
+#./do-build-alembic.sh
+./do-build-gitem-debug.sh
 
 cd ${OLD_DIR}
 echo "Built everything."

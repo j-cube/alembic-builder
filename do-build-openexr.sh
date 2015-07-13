@@ -40,6 +40,9 @@ tar xfz $PKG_FILENAME
 
 cd $PKG_DIR
 
+# apply the patch for building with clang
+cat ${TOP_BUILD_DIR}/openexr-1.7.1.clang.patch | patch -p1
+
 # ./configure --prefix=${TGT} --with-ilmbase-prefix=${TGT} --enable-shared --enable-static --enable-threading --with-pic
 ./configure --prefix=${TGT} --with-ilmbase-prefix=${TGT} 2>&1 | tee ${PKG_LOG_PFX}-configure.log
 make 2>&1 | tee ${PKG_LOG_PFX}-make.log

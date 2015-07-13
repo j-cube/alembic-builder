@@ -1,0 +1,12 @@
+diff -Naur openexr-1.7.1.orig/IlmImf/ImfAutoArray.h openexr-1.7.1/IlmImf/ImfAutoArray.h
+--- openexr-1.7.1.orig/IlmImf/ImfAutoArray.h	2012-07-18 01:27:26.000000000 +0200
++++ openexr-1.7.1/IlmImf/ImfAutoArray.h	2015-07-12 18:43:25.000000000 +0200
+@@ -44,6 +44,8 @@
+ //
+ //-----------------------------------------------------------------------------
+ 
++#include <string.h>
++
+ #include "OpenEXRConfig.h"
+ 
+ namespace Imf {
