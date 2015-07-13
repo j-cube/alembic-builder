@@ -23,6 +23,11 @@
 /openexr-1.7.1
 /hdf5-1.8.9.tar.bz2
 /hdf5-1.8.9
+/libmemcached-*.tar.gz
+/libmemcached-*
+/SQLite-*.tar.gz
+/SQLite-*.tar.gz?uuid=*
+/SQLite-c7c6050e/
 /Alembic_1.5.3_2013121700.tgz
 /Alembic_1.5.3_2013121700
 /alembic_build

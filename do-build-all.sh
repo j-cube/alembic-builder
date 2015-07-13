@@ -35,6 +35,8 @@ fi
 ./do-build-HDF5.sh
 ./do-build-msgpack.sh
 ./do-build-libgit2.sh
+./do-build-sqlite.sh
+./do-build-libmemcached.sh
 #./do-build-alembic.sh
 ./do-build-gitem-debug.sh
 
