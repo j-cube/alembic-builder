@@ -13,6 +13,8 @@ fi
 
 if [ ! -e ${TGT} ] ; then
   sudo mkdir -p ${TGT}
-  # sudo chgrp -R developers ${TGT}
+  if [[ "$OSTYPE" == "linux-gnu" ]]; then
+    sudo chgrp -R developers ${TGT}
+  fi
   sudo chmod g+rwx ${TGT}
 fi
