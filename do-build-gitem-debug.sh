@@ -63,6 +63,12 @@ export ALEMBIC_INSTALL_PREFIX=${TGT}
 #export PYILMBASE_ROOT=${TGT}/lib
 export LIBPYTHON_VERSION=${PYTHON_VERSION}
 
+# our BOOST_ROOT doesn't contain lib (it should contain {boost,lib,stage/lib})
+#export BOOST_ROOT=${TGT}
+#export BOOST_ROOT=${TGT}/lib
+export BOOST_LIBRARYDIR=${TGT}/lib
+export BOOST_INCLUDEDIR=${TGT}/include/boost-1_48
+
 # bootstrap
 echo "Bootstrapping J-Cube git-em build..."
 export CFLAGS="${CFLAGS} -Wno-deprecated-register -Wno-unused-function"
@@ -98,15 +104,17 @@ cmake -D CMAKE_INSTALL_PREFIX=${TGT} \
   -D Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_program_options-xgcc42-mt-1_48.a" \
   -D Boost_PYTHON_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_python-xgcc42-mt-1_48.a" \
   -D Boost_PYTHON_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_python-xgcc42-mt-1_48.a" \
+  -D SQLITE3_INCLUDE_DIR:PATH="${TGT}/include" \
+  -D SQLITE3_LIBRARY:FILEPATH="${TGT}/lib/libsqlite3.a" \
   ${ALEMBIC_BUILD_DIR}
 
 echo "Compiling J-Cube git-em..."
 cd ${ALEMBIC_BUILD_DIR}
 make 2>&1 | tee ${PKG_LOG_PFX}-make.log
 make install 2>&1 | tee ${PKG_LOG_PFX}-make-install.log
-cd python
-make 2>&1 | tee ${PKG_LOG_PFX}-python-make.log
-make install 2>&1 | tee ${PKG_LOG_PFX}-python-make-install.log
+# cd python
+# make 2>&1 | tee ${PKG_LOG_PFX}-python-make.log
+# make install 2>&1 | tee ${PKG_LOG_PFX}-python-make-install.log
 
 date "+%Y/%m/%d %H:%M:%S" > ${TOP_BUILD_DIR}/.built.${PKG}
 
