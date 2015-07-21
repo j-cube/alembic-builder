@@ -38,7 +38,7 @@ fi
 ./do-build-sqlite.sh
 ./do-build-libmemcached.sh
 #./do-build-alembic.sh
-./do-build-gitem-debug.sh
+./do-build-multiverse-debug.sh
 
 cd ${OLD_DIR}
 echo "Built everything."

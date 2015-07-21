@@ -16,10 +16,8 @@ if [ ! -e ${TGT} ] ; then
   exit 1
 fi
 
-PKG="gitem"
-#PKG_URL="https://alembic.googlecode.com/files/Alembic_1.5.3_2013121700.tgz"
-#PKG_FILENAME="Alembic_1.5.3_2013121700.tgz"
-PKG_DIR="jcube-git-em"
+PKG="multiverse"
+PKG_DIR="multiverse"
 
 cd ${TOP_BUILD_DIR}
 #if [ -e ${TOP_BUILD_DIR}/.built.${PKG} ] ; then
@@ -29,28 +27,23 @@ cd ${TOP_BUILD_DIR}
 
 PKG_LOG_PFX="${LOG_PREFIX}${PKG}"
 
-#if [ ! -e $PKG_FILENAME ] ; then
-#  wget --content-disposition $PKG_URL
-#fi
-
 #if [ -e $PKG_DIR ] ; then
 #  rm -rf $PKG_DIR
 #fi
-#tar xfz $PKG_FILENAME
-#
+
 ## TODO: not sure this is needed now that we specify everything
 #sudo updatedb
 
 if [ ! -e $PKG_DIR ] ; then
-  git clone git@github.com:j-cube/git-em.git $PKG_DIR
+  git clone https://github.com/j-cube/multiverse $PKG_DIR
   cd $PKG_DIR
-  git checkout 1.5.8/panta/dev
+  git checkout 1.5.8/multiverse
   cd ${TOP_BUILD_DIR}
 fi
 
 cd $PKG_DIR
 
-ALEMBIC_BUILD_DIR=${TOP_BUILD_DIR}/gitem_build
+ALEMBIC_BUILD_DIR=${TOP_BUILD_DIR}/multiverse_build
 if [ -e ${ALEMBIC_BUILD_DIR} ] ; then
   rm -rf ${ALEMBIC_BUILD_DIR}
 fi
@@ -63,8 +56,14 @@ export ALEMBIC_INSTALL_PREFIX=${TGT}
 #export PYILMBASE_ROOT=${TGT}/lib
 export LIBPYTHON_VERSION=${PYTHON_VERSION}
 
+# our BOOST_ROOT doesn't contain lib (it should contain {boost,lib,stage/lib})
+#export BOOST_ROOT=${TGT}
+#export BOOST_ROOT=${TGT}/lib
+export BOOST_LIBRARYDIR=${TGT}/lib
+export BOOST_INCLUDEDIR=${TGT}/include/boost-1_48
+
 # bootstrap
-echo "Bootstrapping J-Cube git-em build..."
+echo "Bootstrapping J-Cube multiverse build..."
 export CFLAGS="${CFLAGS} -Wno-deprecated-register -Wno-unused-function"
 export CXXFLAGS="${CXXFLAGS} -Wno-deprecated-register -Wno-unused-function"
 ${TARGET_PYTHON} build/bootstrap/alembic_bootstrap.py \
@@ -80,9 +79,11 @@ ${TARGET_PYTHON} build/bootstrap/alembic_bootstrap.py \
   --boost_python_library=${TGT}/lib/libboost_python-gcc46-mt-1_48.a \
   --zlib_include_dir=${TGT}/include \
   --zlib_library=${TGT}/lib/libz.a \
+  --debug \
   ${ALEMBIC_BUILD_DIR} 2>&1 | tee ${PKG_LOG_PFX}-bootstrap.log
 
 # set install target directory
+# -D ALEMBIC_PYTHON_EXECUTABLE:FILEPATH="${TARGET_PYTHON}"
 cmake -D CMAKE_INSTALL_PREFIX=${TGT} \
   -D Boost_LIBRARY_DIR:PATH="${TGT}/lib" \
   -D Boost_THREAD_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_thread-gcc46-mt-1_48.a" \
@@ -100,7 +101,7 @@ cmake -D CMAKE_INSTALL_PREFIX=${TGT} \
   -D SQLITE3_LIBRARY:FILEPATH="${TGT}/lib/libsqlite3.a" \
   ${ALEMBIC_BUILD_DIR}
 
-echo "Compiling J-Cube git-em..."
+echo "Compiling J-Cube multiverse..."
 cd ${ALEMBIC_BUILD_DIR}
 make 2>&1 | tee ${PKG_LOG_PFX}-make.log
 make install 2>&1 | tee ${PKG_LOG_PFX}-make-install.log

@@ -8,7 +8,7 @@ fi
 # BEWARE: OSX sets LC_CTYPE to "UTF-8" which is not valid on linux!
 # This causes the build to FAIL.
 #
-# To avoid the error below when configuring alembic / git-em:
+# To avoid the error below when configuring alembic / multiverse:
 #   what(): locale::facet::_S_create_c_locale name not valid
 # LC_CTYPE and/or LC_ALL (and LANG?) must be set to a valid value.
 #
