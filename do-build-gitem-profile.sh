@@ -74,10 +74,10 @@ ${TARGET_PYTHON} build/bootstrap/alembic_bootstrap.py \
   --ilmbase_include_dir=${TGT}/include/OpenEXR/ \
   --ilmbase_imath_library=${TGT}/lib/libImath.a \
   --boost_include_dir=${TGT}/include/boost-1_48 \
-  --boost_thread_library=${TGT}/lib/libboost_thread-xgcc42-mt-1_48.a \
-  --boost_system_library=${TGT}/lib/libboost_system-xgcc42-mt-1_48.a \
-  --boost_filesystem_library=${TGT}/lib/libboost_filesystem-xgcc42-mt-1_48.a \
-  --boost_python_library=${TGT}/lib/libboost_python-xgcc42-mt-1_48.a \
+  --boost_thread_library=${TGT}/lib/libboost_thread-gcc46-mt-1_48.a \
+  --boost_system_library=${TGT}/lib/libboost_system-gcc46-mt-1_48.a \
+  --boost_filesystem_library=${TGT}/lib/libboost_filesystem-gcc46-mt-1_48.a \
+  --boost_python_library=${TGT}/lib/libboost_python-gcc46-mt-1_48.a \
   --zlib_include_dir=${TGT}/include \
   --zlib_library=${TGT}/lib/libz.a \
   --profile \
@@ -86,26 +86,28 @@ ${TARGET_PYTHON} build/bootstrap/alembic_bootstrap.py \
 # set install target directory
 cmake -D CMAKE_INSTALL_PREFIX=${TGT} \
   -D Boost_LIBRARY_DIR:PATH="${TGT}/lib" \
-  -D Boost_THREAD_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_thread-xgcc42-mt-1_48.a" \
-  -D Boost_THREAD_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_thread-xgcc42-mt-1_48.a" \
-  -D Boost_SYSTEM_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_system-xgcc42-mt-1_48.a" \
-  -D Boost_SYSTEM_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_system-xgcc42-mt-1_48.a" \
-  -D Boost_FILESYSTEM_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_filesystem-xgcc42-mt-1_48.a" \
-  -D Boost_FILESYSTEM_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_filesystem-xgcc42-mt-1_48.a" \
-  -D Boost_PROGRAM_OPTIONS_LIBRARY:FILEPATH="${TGT}/lib/libboost_program_options-xgcc42-mt-1_48.a" \
-  -D Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_program_options-xgcc42-mt-1_48.a" \
-  -D Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_program_options-xgcc42-mt-1_48.a" \
-  -D Boost_PYTHON_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_python-xgcc42-mt-1_48.a" \
-  -D Boost_PYTHON_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_python-xgcc42-mt-1_48.a" \
+  -D Boost_THREAD_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_thread-gcc46-mt-1_48.a" \
+  -D Boost_THREAD_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_thread-gcc46-mt-1_48.a" \
+  -D Boost_SYSTEM_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_system-gcc46-mt-1_48.a" \
+  -D Boost_SYSTEM_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_system-gcc46-mt-1_48.a" \
+  -D Boost_FILESYSTEM_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_filesystem-gcc46-mt-1_48.a" \
+  -D Boost_FILESYSTEM_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_filesystem-gcc46-mt-1_48.a" \
+  -D Boost_PROGRAM_OPTIONS_LIBRARY:FILEPATH="${TGT}/lib/libboost_program_options-gcc46-mt-1_48.a" \
+  -D Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_program_options-gcc46-mt-1_48.a" \
+  -D Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_program_options-gcc46-mt-1_48.a" \
+  -D Boost_PYTHON_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_python-gcc46-mt-1_48.a" \
+  -D Boost_PYTHON_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_python-gcc46-mt-1_48.a" \
+  -D SQLITE3_INCLUDE_DIR:PATH="${TGT}/include" \
+  -D SQLITE3_LIBRARY:FILEPATH="${TGT}/lib/libsqlite3.a" \
   ${ALEMBIC_BUILD_DIR}
 
 echo "Compiling J-Cube git-em..."
 cd ${ALEMBIC_BUILD_DIR}
 make 2>&1 | tee ${PKG_LOG_PFX}-make.log
 make install 2>&1 | tee ${PKG_LOG_PFX}-make-install.log
-cd python
-make 2>&1 | tee ${PKG_LOG_PFX}-python-make.log
-make install 2>&1 | tee ${PKG_LOG_PFX}-python-make-install.log
+# cd python
+# make 2>&1 | tee ${PKG_LOG_PFX}-python-make.log
+# make install 2>&1 | tee ${PKG_LOG_PFX}-python-make-install.log
 
 date "+%Y/%m/%d %H:%M:%S" > ${TOP_BUILD_DIR}/.built.${PKG}
 
