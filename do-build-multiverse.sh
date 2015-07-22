@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+#set -e
 
 if [ -z "${BUILD_SETUP_READY}" ] ; then
   . env-build-setup.sh
@@ -98,10 +98,19 @@ cmake -D CMAKE_INSTALL_PREFIX=${TGT} \
 echo "Compiling J-Cube multiverse..."
 cd ${ALEMBIC_BUILD_DIR}
 make 2>&1 | tee ${PKG_LOG_PFX}-make.log
-make install 2>&1 | tee ${PKG_LOG_PFX}-make-install.log
+#make install 2>&1 | tee ${PKG_LOG_PFX}-make-install.log
 # cd python
 # make 2>&1 | tee ${PKG_LOG_PFX}-python-make.log
 # make install 2>&1 | tee ${PKG_LOG_PFX}-python-make-install.log
+cd ${ALEMBIC_BUILD_DIR}/examples
+make
+for p in AbcConvert AbcEcho AbcHistory AbcLs AbcTree ; do
+  cd ${ALEMBIC_BUILD_DIR}/examples/bin/${p}
+  make
+  make install
+done
+cd ${ALEMBIC_BUILD_DIR}
+make install 2>&1 | tee ${PKG_LOG_PFX}-make-install.log
 
 date "+%Y/%m/%d %H:%M:%S" > ${TOP_BUILD_DIR}/.built.${PKG}
 
