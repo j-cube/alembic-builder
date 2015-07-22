@@ -30,7 +30,8 @@ fi
 PKG_LOG_PFX="${LOG_PREFIX}${PKG}"
 
 if [ ! -e $PKG_FILENAME ] ; then
-  wget --content-disposition $PKG_URL
+  # wget --content-disposition $PKG_URL
+  curl -JLs -O $PKG_URL
 fi
 
 if [ -e $PKG_DIR ] ; then
