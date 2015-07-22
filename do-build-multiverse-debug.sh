@@ -64,8 +64,10 @@ export BOOST_INCLUDEDIR=${TGT}/include/boost-1_48
 
 # bootstrap
 echo "Bootstrapping J-Cube multiverse build..."
-export CFLAGS="${CFLAGS} -Wno-deprecated-register -Wno-unused-function"
-export CXXFLAGS="${CXXFLAGS} -Wno-deprecated-register -Wno-unused-function"
+# export CFLAGS="${CFLAGS} -Wno-deprecated-register -Wno-unused-function"
+# export CXXFLAGS="${CXXFLAGS} -Wno-deprecated-register -Wno-unused-function"
+export CFLAGS="${CFLAGS} -Wno-unused-function"
+export CXXFLAGS="${CXXFLAGS} -Wno-unused-function"
 ${TARGET_PYTHON} build/bootstrap/alembic_bootstrap.py \
   --dependency-install-root=${TGT} \
   --hdf5_include_dir=${TGT}/include \
