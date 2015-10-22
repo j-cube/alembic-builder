@@ -48,6 +48,13 @@ export CFLAGS="-fPIC"
 export LDFLAGS="-fPIC"
 umask 022
 
+# apply fix for https://svn.boost.org/trac/boost/ticket/6165
+wget -q --content-disposition -O - https://svn.boost.org/trac/boost/raw-attachment/ticket/6165/libstdcpp3.hpp.patch | patch -p 0
+
+# fix https://svn.boost.org/trac/boost/ticket/6940
+#sed -i 's/TIME_UTC/TIME_UTC_/g' boost/thread/xtime.hpp
+find . -type f -exec perl -p -i -e 's/TIME_UTC/TIME_UTC_/g' \{\} \;
+
 # TODO: should we pass ${TARGET_PYTHON} to --with-python ?
 ./bootstrap.sh --prefix=${TGT} \
   --with-libraries=chrono,filesystem,system,program_options,thread,python \
