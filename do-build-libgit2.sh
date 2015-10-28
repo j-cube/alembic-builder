@@ -17,9 +17,9 @@ if [ ! -e ${TGT} ] ; then
 fi
 
 PKG="libgit2"
-PKG_URL="https://github.com/libgit2/libgit2/archive/v0.22.1.tar.gz"
-PKG_FILENAME="libgit2-0.22.1.tar.gz"
-PKG_DIR="libgit2-0.22.1"
+PKG_URL="https://github.com/libgit2/libgit2/archive/v0.23.3.tar.gz"
+PKG_FILENAME="libgit2-0.23.3.tar.gz"
+PKG_DIR="libgit2-0.23.3"
 
 cd ${TOP_BUILD_DIR}
 if [ -e ${TOP_BUILD_DIR}/.built.${PKG} ] ; then
