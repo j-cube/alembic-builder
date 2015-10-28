@@ -37,7 +37,7 @@ PKG_LOG_PFX="${LOG_PREFIX}${PKG}"
 if [ ! -e $PKG_DIR ] ; then
   git clone https://github.com/j-cube/multiverse $PKG_DIR
   cd $PKG_DIR
-  git checkout 1.5.8/multiverse
+  git checkout 1.5.8/multiverse-libgit-0.23
   cd ${TOP_BUILD_DIR}
 fi
 
