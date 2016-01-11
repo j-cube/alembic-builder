@@ -5,6 +5,8 @@ if [[ $_ = $0 ]] ; then
   exit 1
 fi
 
+export MULTIVERSE_VERSION_TAG=1.5.8
+
 # BEWARE: OSX sets LC_CTYPE to "UTF-8" which is not valid on linux!
 # This causes the build to FAIL.
 #
@@ -47,9 +49,10 @@ export CFLAGS="-fPIC"
 export LDFLAGS="-fPIC"
 
 #export TGT=/opt/jcube
-export LD_LIBRARY_PATH=${TGT}/lib:${TGT}/lib/db4.7:${TGT}/alembic-1.5.3/lib:$LD_LIBRARY_PATH
-export PYTHONPATH=${PYTHONPATH}:${TGT}/alembic-1.5.3/lib
-export PATH=${TGT}/bin:${TGT}/alembic-1.5.3/bin:$PATH
+export LD_LIBRARY_PATH=${TGT}/lib:${TGT}/lib/db4.7:${TGT}/multiverse-${MULTIVERSE_VERSION_TAG}/lib:$LD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH=${TGT}/lib:$DYLD_LIBRARY_PATH
+export PYTHONPATH=${PYTHONPATH}:${TGT}/multiverse-${MULTIVERSE_VERSION_TAG}/lib
+export PATH=${TGT}/bin:${TGT}/multiverse-${MULTIVERSE_VERSION_TAG}/bin:$PATH
 
 if [ "${TARGET_64}" = "yes" ]; then
   echo "Selected 64 bit target architecture."
