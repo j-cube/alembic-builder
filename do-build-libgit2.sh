@@ -45,6 +45,16 @@ cd build
 cmake .. -DCMAKE_INSTALL_PREFIX=${TGT} -DTHREADSAFE=ON -DBUILD_SHARED_LIBS=ON 2>&1 | tee ${PKG_LOG_PFX}-cmake.log
 cmake --build . --target install 2>&1 | tee ${PKG_LOG_PFX}-cmake-build-install.log
 
+if [[ "$OSTYPE" == "darwin"* ]] ; then
+  # fix dylib library "install name" (should be absolute - or use @rpath with CMake 2.8.12+)
+  # (based on http://answers.opencv.org/question/4134/cmake-install_name_tool-absolute-path-for-library-on-mac-osx/)
+  # (for the very real correct way of handling this, see http://www.kitware.com/blog/home/post/510)
+  find "${TGT}/lib/" -type f -name "libgit2*.dylib" -print0 | while IFS="" read -r -d "" dylibpath ; do
+   echo install_name_tool -id "$dylibpath" "$dylibpath"
+   install_name_tool -id "$dylibpath" "$dylibpath"
+  done
+fi
+
 date "+%Y/%m/%d %H:%M:%S" > ${TOP_BUILD_DIR}/.built.${PKG}
 
 cd ${TOP_BUILD_DIR}
