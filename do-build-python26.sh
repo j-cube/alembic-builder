@@ -63,8 +63,10 @@ make 2>&1 | tee ${PKG_LOG_PFX}-make.log
 make install 2>&1 | tee ${PKG_LOG_PFX}-make-install.log
 
 # install setuptools/easy_install and pip
-wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -O - | ${TARGET_PYTHON}
-wget https://raw.github.com/pypa/pip/master/contrib/get-pip.py -O - | ${TARGET_PYTHON}
+# wget https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py -O - | ${TARGET_PYTHON}
+# wget https://raw.github.com/pypa/pip/master/contrib/get-pip.py -O - | ${TARGET_PYTHON}
+wget https://bootstrap.pypa.io/ez_setup.py -O - | ${TARGET_PYTHON}
+wget https://bootstrap.pypa.io/get-pip.py -O - | ${TARGET_PYTHON}
 
 date "+%Y/%m/%d %H:%M:%S" > ${TOP_BUILD_DIR}/.built.${PKG}
 
