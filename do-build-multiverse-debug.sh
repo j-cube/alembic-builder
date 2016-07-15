@@ -64,15 +64,28 @@ export LIBPYTHON_VERSION=${PYTHON_VERSION}
 export BOOST_LIBRARYDIR=${TGT}/lib
 export BOOST_INCLUDEDIR=${TGT}/include/boost-1_48
 
-#GCC_TAG=gcc46
-GCC_TAG=gcc48
+# Compiler tag and flags
+
+if [[ "$OSTYPE" == "linux-gnu" ]] ; then
+  # linux
+  #GCC_TAG=gcc46
+  GCC_TAG=gcc48
+  # export CFLAGS="${CFLAGS} -Wno-unused-function"
+  # export CXXFLAGS="${CXXFLAGS} -Wno-unused-function"
+  export CFLAGS="${CFLAGS} -Wno-unused-function -Wno-unused-local-typedefs"
+  export CXXFLAGS="${CXXFLAGS} -Wno-unused-function -Wno-unused-local-typedefs"
+elif [[ "$OSTYPE" == "darwin"* ]] ; then
+  # osx
+  GCC_TAG=xgcc42
+  export CFLAGS="${CFLAGS} -Wno-deprecated-register -Wno-unused-function"
+  export CXXFLAGS="${CXXFLAGS} -Wno-deprecated-register -Wno-unused-function"
+else
+  # fallback
+  GCC_TAG=gcc48
+fi
 
 # bootstrap
 echo "Bootstrapping J-Cube multiverse build..."
-# export CFLAGS="${CFLAGS} -Wno-deprecated-register -Wno-unused-function"
-# export CXXFLAGS="${CXXFLAGS} -Wno-deprecated-register -Wno-unused-function"
-export CFLAGS="${CFLAGS} -Wno-unused-function -Wno-unused-local-typedefs"
-export CXXFLAGS="${CXXFLAGS} -Wno-unused-function -Wno-unused-local-typedefs"
 ${TARGET_PYTHON} build/bootstrap/alembic_bootstrap.py \
   --dependency-install-root=${TGT} \
   --hdf5_include_dir=${TGT}/include \
