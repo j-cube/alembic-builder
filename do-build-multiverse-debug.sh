@@ -64,14 +64,28 @@ export LIBPYTHON_VERSION=${PYTHON_VERSION}
 export BOOST_LIBRARYDIR=${TGT}/lib
 export BOOST_INCLUDEDIR=${TGT}/include/boost-1_48
 
+# Compiler tag and flags
+
+if [[ "$OSTYPE" == "linux-gnu" ]] ; then
+  # linux
+  #GCC_TAG=gcc46
+  GCC_TAG=gcc48
+  # export CFLAGS="${CFLAGS} -Wno-unused-function"
+  # export CXXFLAGS="${CXXFLAGS} -Wno-unused-function"
+  export CFLAGS="${CFLAGS} -Wno-unused-function -Wno-unused-local-typedefs"
+  export CXXFLAGS="${CXXFLAGS} -Wno-unused-function -Wno-unused-local-typedefs"
+elif [[ "$OSTYPE" == "darwin"* ]] ; then
+  # osx
+  GCC_TAG=xgcc42
+  export CFLAGS="${CFLAGS} -Wno-deprecated-register -Wno-unused-function"
+  export CXXFLAGS="${CXXFLAGS} -Wno-deprecated-register -Wno-unused-function"
+else
+  # fallback
+  GCC_TAG=gcc48
+fi
+
 # bootstrap
 echo "Bootstrapping J-Cube multiverse build..."
-# osx
-export CFLAGS="${CFLAGS} -Wno-deprecated-register -Wno-unused-function"
-export CXXFLAGS="${CXXFLAGS} -Wno-deprecated-register -Wno-unused-function"
-# linux
-# export CFLAGS="${CFLAGS} -Wno-unused-function"
-# export CXXFLAGS="${CXXFLAGS} -Wno-unused-function"
 ${TARGET_PYTHON} build/bootstrap/alembic_bootstrap.py \
   --dependency-install-root=${TGT} \
   --hdf5_include_dir=${TGT}/include \
@@ -79,10 +93,10 @@ ${TARGET_PYTHON} build/bootstrap/alembic_bootstrap.py \
   --ilmbase_include_dir=${TGT}/include/OpenEXR/ \
   --ilmbase_imath_library=${TGT}/lib/libImath.a \
   --boost_include_dir=${TGT}/include/boost-1_48 \
-  --boost_thread_library=${TGT}/lib/libboost_thread-xgcc42-mt-1_48.a \
-  --boost_system_library=${TGT}/lib/libboost_system-xgcc42-mt-1_48.a \
-  --boost_filesystem_library=${TGT}/lib/libboost_filesystem-xgcc42-mt-1_48.a \
-  --boost_python_library=${TGT}/lib/libboost_python-xgcc42-mt-1_48.a \
+  --boost_thread_library=${TGT}/lib/libboost_thread-${GCC_TAG}-mt-1_48.a \
+  --boost_system_library=${TGT}/lib/libboost_system-${GCC_TAG}-mt-1_48.a \
+  --boost_filesystem_library=${TGT}/lib/libboost_filesystem-${GCC_TAG}-mt-1_48.a \
+  --boost_python_library=${TGT}/lib/libboost_python-${GCC_TAG}-mt-1_48.a \
   --zlib_include_dir=${TGT}/include \
   --zlib_library=${TGT}/lib/libz.a \
   --debug \
@@ -92,17 +106,17 @@ ${TARGET_PYTHON} build/bootstrap/alembic_bootstrap.py \
 # -D ALEMBIC_PYTHON_EXECUTABLE:FILEPATH="${TARGET_PYTHON}"
 cmake -D CMAKE_INSTALL_PREFIX=${TGT} \
   -D Boost_LIBRARY_DIR:PATH="${TGT}/lib" \
-  -D Boost_THREAD_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_thread-xgcc42-mt-1_48.a" \
-  -D Boost_THREAD_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_thread-xgcc42-mt-1_48.a" \
-  -D Boost_SYSTEM_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_system-xgcc42-mt-1_48.a" \
-  -D Boost_SYSTEM_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_system-xgcc42-mt-1_48.a" \
-  -D Boost_FILESYSTEM_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_filesystem-xgcc42-mt-1_48.a" \
-  -D Boost_FILESYSTEM_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_filesystem-xgcc42-mt-1_48.a" \
-  -D Boost_PROGRAM_OPTIONS_LIBRARY:FILEPATH="${TGT}/lib/libboost_program_options-xgcc42-mt-1_48.a" \
-  -D Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_program_options-xgcc42-mt-1_48.a" \
-  -D Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_program_options-xgcc42-mt-1_48.a" \
-  -D Boost_PYTHON_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_python-xgcc42-mt-1_48.a" \
-  -D Boost_PYTHON_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_python-xgcc42-mt-1_48.a" \
+  -D Boost_THREAD_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_thread-${GCC_TAG}-mt-1_48.a" \
+  -D Boost_THREAD_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_thread-${GCC_TAG}-mt-1_48.a" \
+  -D Boost_SYSTEM_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_system-${GCC_TAG}-mt-1_48.a" \
+  -D Boost_SYSTEM_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_system-${GCC_TAG}-mt-1_48.a" \
+  -D Boost_FILESYSTEM_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_filesystem-${GCC_TAG}-mt-1_48.a" \
+  -D Boost_FILESYSTEM_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_filesystem-${GCC_TAG}-mt-1_48.a" \
+  -D Boost_PROGRAM_OPTIONS_LIBRARY:FILEPATH="${TGT}/lib/libboost_program_options-${GCC_TAG}-mt-1_48.a" \
+  -D Boost_PROGRAM_OPTIONS_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_program_options-${GCC_TAG}-mt-1_48.a" \
+  -D Boost_PROGRAM_OPTIONS_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_program_options-${GCC_TAG}-mt-1_48.a" \
+  -D Boost_PYTHON_LIBRARY_DEBUG:FILEPATH="${TGT}/lib/libboost_python-${GCC_TAG}-mt-1_48.a" \
+  -D Boost_PYTHON_LIBRARY_RELEASE:FILEPATH="${TGT}/lib/libboost_python-${GCC_TAG}-mt-1_48.a" \
   -D SQLITE3_INCLUDE_DIR:PATH="${TGT}/include" \
   -D SQLITE3_LIBRARY:FILEPATH="${TGT}/lib/libsqlite3.a" \
   ${ALEMBIC_BUILD_DIR}
