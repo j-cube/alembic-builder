@@ -44,6 +44,8 @@ fi
 cd $PKG_DIR
 
 perl -pi -e 's/ALEMBIC_NO_TESTS FALSE/ALEMBIC_NO_TESTS TRUE/' CMakeLists.txt
+perl -pi -e 's/-Werror//' CMakeLists.txt
+perl -pi -e 's/-Wextra//' CMakeLists.txt
 
 ALEMBIC_BUILD_DIR=${TOP_BUILD_DIR}/multiverse_build
 if [ -e ${ALEMBIC_BUILD_DIR} ] ; then
