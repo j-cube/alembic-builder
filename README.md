@@ -7,7 +7,7 @@ installing to a single directory (`$TGT`).
 Before launching the scripts, be sure to checkout the most appropriate branch for your system, for
 example:
 
-	git checkout linux-gcc48-multiverse-1.5.8
+	git checkout linux-gcc48-multiverse-2.0.0
 
 Then before continuing, edit env-build-config.sh setting environment variables as desired.
 The most influential are:
