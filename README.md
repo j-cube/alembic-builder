@@ -1,20 +1,20 @@
-J-CUBE ALEMBIC BUILDER
+J Cube Alembic Builder
 ======================
 
-The provided scripts automatically compile everything (Alembic and all its dependencies),
+The provided scripts automatically compile everything (Alembic or `Multiverse` and all the dependencies),
 installing to a single directory (`$TGT`).
 
-Before launching the scripts, edit env-build-config.sh setting environment variables as desired.
+Before launching the scripts, be sure to checkout the most appropriate branch for your system, for
+example:
+
+	git checkout linux-gcc48-multiverse-2.0.0
+
+Then before continuing, edit env-build-config.sh setting environment variables as desired.
 The most influential are:
 
 * `TGT`: the target directory where everything will be installed (default: `/opt/jcube`)
 * `TARGET_64`: if the target is 64 bit (default: `yes`)
 * `PYTHON_VERSION`: if using 2.6 or 2.7 (default: `2.6`)
-
-Then create the target directory. For example:
-
-	sudo mkdir -p /opt/jcube
-	sudo chown $UID:$GID /opt/jcube
 
 Then, simply run:
 
@@ -24,10 +24,14 @@ Then, simply run:
 CURRENT LIMITATIONS
 -------------------
 
-The whole thing has been tested only on Ubuntu 12.04.4 LTS x86_64
+The whole thing has been tested only on
+
+* Ubuntu 12.04.4 LTS x86_64
+* Centos 7.0.1406 x86_64
+* Mac OS X 10.9.x (LLVM 5.1 clang-503.0.38 and LLVM 6.0 clang-600.0.56)
 
 Perhaps some changes will be necessary if changing `TGT` to something else than `/opt/jcube`
-(especially inside Python own `setup.py` for Berkeley DB lib search and inside Alembic
+(especially inside Python own `setup.py` for Berkeley DB lib search and inside Alembic / Multiverse
 various `CMakeLists.txt` and `build/Find*.cmake` modules).
 
 Only Python 2.6 has been tested.
